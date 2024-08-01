@@ -63,31 +63,31 @@ public class FollowerService {
         followerRepository.deleteById(followerId);
     }
 
-//    public boolean isFollowerTablePopulated() {
-//        return followerRepository.count() > 7;
-//    }
-//
-//    public void populateSampleFollowers() {
-//        List<User> users = userService.getAllUsers();
-//        if (users.size() < 3) {
-//            System.out.println("Not enough users to populate sample followers.");
-//            return;
-//        }
-//
-//        for (User user : users) {
-//            User randomUserToFollow = selectRandomUserToFollow(users, user);
-//            createFollower(new Follower(user, randomUserToFollow));
-//        }
-//    }
-//
-//    private User selectRandomUserToFollow(List<User> users, User currentUser) {
-//        Random random = new Random();
-//        // Filter out the current user from the list of users
-//        List<User> potentialFollowees = users.stream()
-//                .filter(user -> !user.getUserId().equals(currentUser.getUserId()))
-//                .toList();
-//
-//        // Select a random user from the filtered list
-//        return potentialFollowees.get(random.nextInt(potentialFollowees.size()));
-//    }
+    public boolean isFollowerTablePopulated() {
+        return followerRepository.count() > 7;
+    }
+
+    public void populateSampleFollowers() {
+        List<User> users = userService.getAllUsers();
+        if (users.size() < 3) {
+            System.out.println("Not enough users to populate sample followers.");
+            return;
+        }
+
+        for (User user : users) {
+            User randomUserToFollow = selectRandomUserToFollow(users, user);
+            createFollower(new Follower(user, randomUserToFollow));
+        }
+    }
+
+    private User selectRandomUserToFollow(List<User> users, User currentUser) {
+        Random random = new Random();
+        // Filter out the current user from the list of users
+        List<User> potentialFollowees = users.stream()
+                .filter(user -> !user.getUserId().equals(currentUser.getUserId()))
+                .toList();
+
+        // Select a random user from the filtered list
+        return potentialFollowees.get(random.nextInt(potentialFollowees.size()));
+    }
 }

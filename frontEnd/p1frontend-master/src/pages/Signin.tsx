@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/signin.css';
-// import logo from '../pictures/logo.png';
 
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -68,7 +67,7 @@ const Signin = () => {
     return (
                 <div className='bodySignin'>
         <form className="form-signin " onSubmit={handleSubmit}>
-            {/* <img className="mb-4" src={logo} alt="Logo" width="72" height="72" /> */}
+            <img className="mb-4" src="\pictures\logo.png" alt="Logo" width="72" height="72" />
             <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
             <label htmlFor="username" className="sr-only">Username</label>
             <input
