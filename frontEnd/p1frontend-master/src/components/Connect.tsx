@@ -11,12 +11,20 @@ const ConnectionPage: React.FC = () => {
     useEffect(() => {
         const fetchConnections = async () => {
             try {
-                const response = await fetch(`${config.BASE_URL}/api/connections/receiver/${user?.userId}`, {
+                const requesterResponse = await fetch(`${config.BASE_URL}/api/connections/requester/${user?.userId}`, {
                     credentials: 'include',
                 });
-                if (response.ok) {
-                    const data = await response.json();
-                    setConnections(data);
+
+                const receiverResponse = await fetch(`${config.BASE_URL}/api/connections/receiver/${user?.userId}`, {
+                    credentials: 'include',
+                });
+
+                if (requesterResponse.ok && receiverResponse.ok) {
+                    const requesterData = await requesterResponse.json();
+                    const receiverData = await receiverResponse.json();
+                    // Combine both connections lists
+                    const combinedConnections = [...requesterData, ...receiverData];
+                    setConnections(combinedConnections);
                 } else {
                     console.error('Failed to fetch connections');
                 }
@@ -67,7 +75,7 @@ const ConnectionPage: React.FC = () => {
                 })
             });
             if (response.ok) {
-                setConnections(connections.filter(conn => conn.connectionId !== connectionId));
+                setConnections(connections.map(conn => conn.connectionId === connectionId ? { ...conn, status: 'DECLINED' } : conn));
             } else {
                 console.error('Failed to reject connection');
             }
@@ -94,27 +102,32 @@ const ConnectionPage: React.FC = () => {
 
     return (
         <div className="connection-page">
-        <h1>Connections</h1>
-        {connections.length === 0 ? (
-            <p>No connections available.</p>
-        ) : (
-            <div className="connection-list">
-                {connections.map((conn) => (
-                    <div key={conn.connectionId} className="connection-item">
-                        <p>{conn.requesterId !== user?.userId ? conn.requesterUsername : conn.receiverUsername}</p>
-                        {conn.status === 'PENDING' ? (
-                            <div className="connection-actions">
-                                <button onClick={() => handleAccept(conn)} className="accept-btn">Accept</button>
-                                <button onClick={() => handleReject(conn.connectionId)} className="reject-btn">Reject</button>
-                            </div>
-                        ) : (
-                            <button onClick={() => handleRemove(conn.connectionId)} className="remove-btn">Remove</button>
-                        )}
-                    </div>
-                ))}
-            </div>
-        )}
-    </div>
+            <h1>Connections</h1>
+            {connections.length === 0 ? (
+                <p>No connections available.</p>
+            ) : (
+                <div className="connection-list">
+                    {connections.map((conn) => (
+                        <div key={conn.connectionId} className="connection-item">
+                            <p>
+                                {conn.requesterId !== user?.userId ? conn.requesterUsername : conn.receiverUsername}
+                            </p>
+                            {conn.receiverId === user?.userId && conn.status === 'PENDING' ? (
+                                <div className="connection-actions">
+                                    <button onClick={() => handleAccept(conn)} className="accept-btn">Accept</button>
+                                    <button onClick={() => handleReject(conn.connectionId)} className="reject-btn">Reject</button>
+                                </div>
+                            ) : (
+                                <p className={`status-${conn.status.toLowerCase()}`}>Status: {conn.status}</p>
+                            )}
+                            {conn.status === 'ACCEPTED' && (
+                                <button onClick={() => handleRemove(conn.connectionId)} className="remove-btn">Remove</button>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
     );
 };
 

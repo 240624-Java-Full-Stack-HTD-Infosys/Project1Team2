@@ -386,13 +386,8 @@ const Profile: React.FC = () => {
                                                     {singlePostContents.length > 0 ? (
                                                         singlePostContents.map((content, index) => (
                                                             <tr key={index}>
-                                                                <td className="text-center">
-                                                                    <i className="fa fa-comment"></i>
-
-                                                                </td>
-
-                                                              
-                                                                location.pathname === '/profile' || location.pathname === `/profile/${user?.userId}` ? (
+                                                               
+                                                                {/* {location.pathname === '/profile' || location.pathname === `/profile/${user?.userId}` ? (
                                                                     <td>
                                                                         {editingPostId === posts[index].postId ? (
                                                                             <form onSubmit={handleUpdatePost}>
@@ -408,17 +403,13 @@ const Profile: React.FC = () => {
                                                                                 <button type="submit" className="btn btn-primary mt-2">Update Post</button>
                                                                                 <button type="button" className="btn btn-secondary mt-2 ms-2" onClick={() => { setEditingPostId(null); setEditingPostContent(''); }}>Cancel</button>
                                                                             </form>
-                                                                        ) : (
-                                                                            <>
-                                                                                <p>{content}</p>
-                                                                                <button className="btn btn-warning btn-sm" onClick={() => handleEditPost(posts[index].postId, content)}>Edit</button>
-                                                                                <button className="btn btn-danger btn-sm ms-2" onClick={() => handleDeletePost(posts[index].postId)}>Delete</button>
-                                                                            </>
-                                                                        )}
-                                                                    </td>) : null 
-                                                            
+                                                                        ) : null}
+                                                                    </td>
+                                                                ) : null} */}
 
-                                                                
+
+
+
                                                                 <td>
                                                                     {editingPostId === posts[index].postId ? (
                                                                         <form onSubmit={handleUpdatePost}>
@@ -431,7 +422,7 @@ const Profile: React.FC = () => {
                                                                                     required
                                                                                 />
                                                                             </div>
-                                                                            <button type="submit" className="btn btn-primary mt-2">Update Post</button>
+                                                                            <button type="submit" className="btn btn-custom btn-edit mt-2">Update Post</button>
                                                                             <button type="button" className="btn btn-secondary mt-2 ms-2" onClick={() => { setEditingPostId(null); setEditingPostContent(''); }}>Cancel</button>
                                                                         </form>
                                                                     ) : (
@@ -444,7 +435,6 @@ const Profile: React.FC = () => {
                                                                                     <button className="btn btn-danger btn-sm ms-2" onClick={() => handleDeletePost(posts[index].postId)}>Delete</button>) : null}
                                                                                 <button className="btn btn-info btn-sm small-btn" onClick={() => handleSharePost(posts[index].postId)}>Share</button>
                                                                             </div>
-
                                                                         </div>
                                                                     )}
                                                                 </td>
